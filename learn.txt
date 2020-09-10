@@ -102,3 +102,36 @@ php artisan make:controller HomeController --resource
 ```
 --> 輸入之後會在 app/Http/Controllers 裡面建立 HomeController (控制器名稱)
 --> 裡面會有 index() -> 顯示資料, create() -> 新增資料, store() -> 就是新增一筆資料來進行"儲存"的這個動作, show() -> 與index不同在於 index是多筆 show是單筆, edit() -> 編輯頁面, udpate() -> 更新資料, destroy() -> 刪除資料
+
+
+3. Models
+3.1 確認DB連線
+--> config/database.php
+```
+'host' => env('DB_HOST', 'localhost'),
+'port' => env('DB_PORT', '8889'),
+'database' => env('DB_DATABASE', 'laravel'),
+'username' => env('DB_USERNAME', 'root'),
+'password' => env('DB_PASSWORD', 'root'),
+'unix_socket' => env('DB_SOCKET', '	/Applications/MAMP/tmp/mysql/mysql.sock'),
+```
+--> 以上是根據MAMP設定的
+
+3.2 利用cmd建立
+```
+php artisan make:model Role
+```
+--> model 後面要加上資料表名稱 (此方法要先建立好資料表)
+--> 會在 app/Models 裡面建立 Role.php (資料表名稱)
+
+3.3 告知使用的資料表名稱
+```
+protected $table = 'Role';
+```
+--> 加在 class 裡面
+
+3.4 取消在處理資料表時自動加上時間戳記
+```
+public $timestamps = false;
+```
+--> 不會出現 created_at 和 udpated_at 欄位
