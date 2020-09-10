@@ -16,3 +16,22 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::get('MyController', function () {
+    return 'Hello World';
+});
+
+Route::get('testPost',function(){
+    $csrf_token = csrf_token();
+    $form = <<<FORM
+        <form action="home" method="POST">
+            <input type="hidden" name="_token" value="{$csrf_token}">
+            <input type="submit" value="Submit"/>
+        </form>
+    FORM;
+    return $form;
+});
+
+Route::post('home',function(){
+    return "Hello World[POST]!";
+});
