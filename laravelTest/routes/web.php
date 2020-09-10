@@ -35,3 +35,11 @@ Route::get('testPost',function(){
 Route::post('home',function(){
     return "Hello World[POST]!";
 });
+
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');
+
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');

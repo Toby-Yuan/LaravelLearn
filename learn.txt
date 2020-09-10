@@ -108,12 +108,12 @@ php artisan make:controller HomeController --resource
 3.1 確認DB連線
 --> config/database.php
 ```
-'host' => env('DB_HOST', 'localhost'),
+'host' => env('DB_HOST', '127.0.0.1'),
 'port' => env('DB_PORT', '8889'),
 'database' => env('DB_DATABASE', 'laravel'),
 'username' => env('DB_USERNAME', 'root'),
 'password' => env('DB_PASSWORD', 'root'),
-'unix_socket' => env('DB_SOCKET', '	/Applications/MAMP/tmp/mysql/mysql.sock'),
+'unix_socket' => env('DB_SOCKET', '/Applications/MAMP/tmp/mysql/mysql.sock'),
 ```
 --> 以上是根據MAMP設定的
 
@@ -135,3 +135,65 @@ protected $table = 'Role';
 public $timestamps = false;
 ```
 --> 不會出現 created_at 和 udpated_at 欄位
+
+
+4. Authentication認證登入
+4.1 利用cmd自動建立註冊登入系統
+```
+composer require laravel/ui
+php artisan ui vue --auth
+```
+
+4.2 建立此專案的使用者 (在電腦的終端機執行)
+4.2.1 先建立使用者
+```
+/Applications/MAMP/Library/bin/mysql -u root -p
+```
+
+4.2.2 帳號: sarahcheng, 密碼: www^0^Yoyo409
+```
+CREATE USER 'sarahcheng'@'localhost' IDENTIFIED WITH mysql_native_password BY 'www^0^Yoyo409';
+```
+
+4.2.3 提升此使用者的權利
+```
+GRANT ALL PRIVILEGES ON *.* TO 'sarahcheng'@'localhost';
+```
+
+4.2.4 登出
+```
+quit
+```
+
+4.3 建立目標資料表 
+4.3.1 登入(在電腦的終端機執行)
+```
+mysql -u sarahcheng -pwww^0^Yoyo409
+```
+
+4.3.2 更改.env中的資料
+```
+DB_HOST=127.0.0.1
+DB_PORT=8889
+DB_DATABASE=laravel
+DB_USERNAME=sarahcheng
+DB_PASSWORD=www^0^Yoyo409
+```
+
+4.3.3 更改 config/database.php
+```
+'host' => env('DB_HOST', '127.0.0.1'),
+'port' => env('DB_PORT', '8889'),
+'database' => env('DB_DATABASE', 'laravel'),
+'username' => env('DB_USERNAME', 'sarahcheng'),
+'password' => env('DB_PASSWORD', 'www^0^Yoyo409'),
+'unix_socket' => env('DB_SOCKET', '/Applications/MAMP/tmp/mysql/mysql.sock'),
+'charset' => 'utf8',
+'collation' => 'utf8_general_ci',
+```
+
+4.3.4 建立(此專案的終端機)
+```
+php artisan config:cache
+php artisan migrate
+```
